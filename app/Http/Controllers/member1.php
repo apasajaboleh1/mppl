@@ -284,7 +284,7 @@ class member1 extends Controller
                 //var_dump($periode);
                 $tmp1=$temp->tampil_history_asdos($periode);
                 if($req->session()->get('role')=='1')
-                return view('admin',compact('res','tmp1'));
+                    return view('admin',compact('res','tmp1'));
                 elseif ($req->session()->get('role')=='2')
                     return view('mhs',compact('res','tmp1'));
             }
@@ -332,7 +332,7 @@ class member1 extends Controller
                 $id_slot=Input::get('id');
                 $nrp=$req->session()->get('username');
 
-                $tmp1=$temp->insert_data($nrp,$periode,$id_slot);
+                $tmp1=$temp->insert_data_calon_asdos($nrp,$periode,$id_slot);
                 return redirect('mahasiswa/daftar')->with('result',$tmp1);
             }
             else
@@ -347,5 +347,69 @@ class member1 extends Controller
             $message='you not authenticated';
             return redirect('login');
         }
+    }
+    //belom kelar
+    public function get_all_calon_asdos(Request $req)
+    {
+        if($req->session()->has('role')!=NULL)
+        {
+                $mytime = Carbon\Carbon::now();
+                $tempdata=explode(" ", $mytime->toDateTimeString());
+                $temp1=explode("-", $tempdata[0]);
+                $periode='';
+                $bulan=(int)$temp1[1];
+                if($bulan >=2 && $bulan<=6)$periode='genap';
+                else $periode='gasal';
+                if($periode=="genap")
+                {
+                   $periode=$periode.((int)$temp1[0]-1); 
+                }
+                else
+                {
+                 $periode=$periode.((int)$temp1[0]);   
+                }
+            if($req->session()->get('role')=='1')
+            {
+                $temp=new Asdos();
+                $ans=$temp->get_asdos_ada($periode);
+                //var_dump($ans);
+                return view('penerimaan_asdos',compact('ans'));
+            }
+            else
+            {
+                $message='error please relogin';
+                $req->session()->flush();
+                return redirect('login');
+            }
+        }
+        else
+        {
+            $message='you not authenticated';
+            return redirect('login');
+        }      
+    }
+    public function set_asdos(Request $req , $id)
+    {
+        if($req->session()->has('role')!=NULL)
+        {
+            if($req->session()->get('role')=='1')
+            {
+                $temp=new Asdos();
+                $ans=$temp->insert_asdos_baru($id);
+                //var_dump($ans);
+                return redirect('admin/get_asdos')->with('result',$ans);
+            }
+            else
+            {
+                $message='error please relogin';
+                $req->session()->flush();
+                return redirect('login');
+            }
+        }
+        else
+        {
+            $message='you not authenticated';
+            return redirect('login');
+        }   
     }
 }

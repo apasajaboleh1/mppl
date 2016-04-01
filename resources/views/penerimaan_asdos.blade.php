@@ -51,33 +51,32 @@ th, td {
         <div class="container">
             <div class="content">
                 <p>{{ "Login as ".Session::get('name')}}</p>
-                <a href="{{url('admin/get_asdos')}}">penerimaan asdos</a>
+                <a href="{{url('admin')}}">balik</a>
                 <a href="{{url('logout')}}">logout</a>
-                <div class="title">cari periode</div>
-                <form name="cari" method="post" action="">
-                {{ csrf_field() }}
-                <label>Periode</label><br>
-                <select name="periode">
-                @foreach($res as $hasil)
-                    <option value="{{$hasil}}">{{$hasil}}</option>
-                @endforeach
-                </select>
-                <input type="submit" value="cari"></input>
-                </form>
                 <div class="title">list mahasiswa</div>
+                @if(session('result'))
+                 <div class="alert alert-success">
+                    {{ session('result') }}
+                    </div>
+                    @endif
                 <table>
+                @if(count($ans)==0)
+                <p>{{"Tidak ada yang ngelamar"}}</p>
+                @endif
                     <tr>
                         <th>nama</th>
                         <th>mata kuliah</th>
                         <th>kelas</th>
                         <th>periode</th>
+                        <th>Persetujuan</th>
                     </tr>
-                    @foreach($tmp1 as $hasil1)
+                    @foreach($ans as $hasil1)
                     <tr>
                         <td>{{$hasil1->nama}}</td>
                         <td>{{$hasil1->nama_mk}}</td>
                         <td>{{$hasil1->kelas}}</td>
                         <td>{{$hasil1->periode}}</td>
+                        <td><a href="{{url('admin/set_asdos/'.$hasil1->id)}}">Daftar</a></td>
                     </tr>
                     @endforeach
                 </table>
