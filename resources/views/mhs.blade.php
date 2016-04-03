@@ -56,11 +56,14 @@ th, td {
                 <div class="title">cari periode</div>
                 <form name="cari" method="post" action="">
                 {{ csrf_field() }}
+                
                 <label>Periode</label><br>
                 <select name="periode">
+                @if($res)
                 @foreach($res as $hasil)
                     <option value="{{$hasil}}">{{$hasil}}</option>
                 @endforeach
+                @endif
                 </select>
                 <input type="submit" value="cari"></input>
                 </form>

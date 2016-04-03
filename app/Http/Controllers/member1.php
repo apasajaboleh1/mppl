@@ -199,7 +199,7 @@ class member1 extends Controller
             return redirect('login');
         }
     }
-    public function daftar_asdos(Request $req)
+    public function list_asdos(Request $req)
     {
          if($req->session()->has('role')!=NULL)
         {
@@ -306,7 +306,7 @@ class member1 extends Controller
         $req->session()->flush();
         return redirect('login');
     }
-    public function input_daftar_asdos(Request $req)
+    public function daftar(Request $req)
     {
         if($req->session()->has('role')!=NULL)
         {
@@ -349,7 +349,7 @@ class member1 extends Controller
         }
     }
     //belom kelar
-    public function get_all_calon_asdos(Request $req)
+    public function list_bakal_asdos(Request $req)
     {
         if($req->session()->has('role')!=NULL)
         {
@@ -388,7 +388,7 @@ class member1 extends Controller
             return redirect('login');
         }      
     }
-    public function set_asdos(Request $req , $id)
+    public function menerima_asdos(Request $req , $id)
     {
         if($req->session()->has('role')!=NULL)
         {
